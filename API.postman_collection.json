@@ -1,0 +1,88 @@
+{
+	"info": {
+		"_postman_id": "52a59872-4cb2-41c3-a2ca-fd9697987418",
+		"name": "API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31574725"
+	},
+	"item": [
+		{
+			"name": "Upload",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/sharr/Documents/sampleData.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/upload",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"upload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/status/d05458cc-96e2-4ff3-b24b-8e1dd934afc0",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"status",
+						"d05458cc-96e2-4ff3-b24b-8e1dd934afc0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Export",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/export/513137d5-d64a-4cf9-b8f3-38748b287f6d",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"export",
+						"513137d5-d64a-4cf9-b8f3-38748b287f6d"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

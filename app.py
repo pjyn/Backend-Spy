@@ -31,6 +31,8 @@ def create_tables():
 def upload_csv():
     logging.info("Received upload request")
     file = request.files.get('file')
+    webhook_url = request.form.get('webhook_url')  # Retrieve the webhook URL from the form data
+
     if not file:
         logging.error("No file uploaded")
         return jsonify({"error": "No file uploaded"}), 400
@@ -49,7 +51,8 @@ def upload_csv():
                 request_id=request_id,
                 product_name=row['Product Name'],
                 input_image_urls=row['Input Image Urls'],
-                status='Pending'
+                status='Pending',
+                webhook_url=webhook_url  # Store the webhook URL
             )
             db.session.add(product)
             logging.info(f"Added product: {row['Product Name']} with request_id: {request_id}")

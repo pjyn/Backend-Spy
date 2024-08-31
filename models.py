@@ -9,3 +9,4 @@ class Product(db.Model):
     input_image_urls = db.Column(db.Text, nullable=False)
     output_image_urls = db.Column(db.Text)  # Column for output URLs
     status = db.Column(db.String(20), nullable=False)
+    webhook_url = db.Column(db.String, nullable=True)

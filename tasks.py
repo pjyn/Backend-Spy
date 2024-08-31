@@ -27,32 +27,41 @@ def process_images(request_id):
                 try:
                     logging.info(f"Processing image from URL: {url}")
                     response = requests.get(url)
-                    response.raise_for_status()  # Ensure we get a successful response
+                    response.raise_for_status()
 
                     img = Image.open(BytesIO(response.content))
                     img = img.resize((img.width // 2, img.height // 2))  # Resize to 50%
                     output_url = f"processed_{url.split('/')[-1]}"
-
-                    # Check the output path
-                    logging.info(f"Saving processed image to: {output_url}")
                     img.save(output_url)
 
                     output_urls.append(output_url)
                     logging.info(f"Processed image from URL: {url} and saved to {output_url}")
                 except Exception as e:
                     logging.error(f"Failed to process image from URL: {url} with error: {e}")
-                    continue  # Skip this URL and move to the next one
-
-            # Log the final output URLs before committing to the database
-            logging.info(f"Output URLs for product {product.product_name}: {output_urls}")
+                    continue
 
             if output_urls:
                 product.output_image_urls = ','.join(output_urls)
                 product.status = 'Completed'
             else:
-                product.status = 'Failed'  # Mark as failed if no output URLs were generated
+                product.status = 'Failed'
 
-            logging.info(f"Processed product {product.product_name} with status {product.status} and output URLs: {product.output_image_urls}")
+            logging.info(f"Processed product {product.product_name} with status {product.status}")
+
+            # Webhook notification
+            if product.webhook_url:
+                try:
+                    webhook_data = {
+                        'request_id': request_id,
+                        'product_name': product.product_name,
+                        'status': product.status,
+                        'output_image_urls': product.output_image_urls
+                    }
+                    webhook_response = requests.post(product.webhook_url, json=webhook_data)
+                    webhook_response.raise_for_status()
+                    logging.info(f"Webhook sent successfully to {product.webhook_url}")
+                except Exception as e:
+                    logging.error(f"Failed to send webhook to {product.webhook_url} with error: {e}")
 
         try:
             db.session.commit()
